@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        if (groupSize==1) return true;
+        if (hand.size() % groupSize != 0) return false;
+        sort(hand.begin(),hand.end());
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>minHeap; 
+        //minheap of pairs, required and # it is in the hand
+        for (int cur : hand){
+            if (!minHeap.empty() && minHeap.top().first < cur) return false;
+            if (!minHeap.empty() && minHeap.top().first==cur){
+                if (minHeap.top().second+1 < groupSize) minHeap.push({cur+1,minHeap.top().second+1});
+                minHeap.pop();
+            }
+             else minHeap.push({cur+1,1});
+        }
+        return minHeap.empty();
+    }
+};
