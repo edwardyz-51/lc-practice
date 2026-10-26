@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int carFleet(int target, vector<int>& position, vector<int>& speed) {
+        vector<pair<int,double>>cars;
+        int n = position.size(), ans = n;
+        cars.reserve(n);
+        //pair<position, time to reach target>
+        for (int i = 0; i < n; ++i)
+            cars.push_back({position[i], (double)(target-position[i])/speed[i]});
+        sort(cars.rbegin(),cars.rend());
+        //sort by position, descending
+        double slowestsofar = cars[0].second;
+        for (int i = 1; i < n; ++i){
+            if (cars[i].second <= slowestsofar) ans--;
+            //car is faster than the slowest, so will form a fleet
+            else slowestsofar=cars[i].second;
+            // new fleet
+        }
+        return ans;
+    }
+};
